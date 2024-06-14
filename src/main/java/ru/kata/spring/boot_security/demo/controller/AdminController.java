@@ -5,8 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.security.UserDetailsServiceImpl;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
+
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/admin")
@@ -14,23 +17,28 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService) {
+    public AdminController(UserService userService, RoleService roleService, UserDetailsServiceImpl userDetailsService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.userDetailsService = userDetailsService;
     }
 
     @GetMapping("/user")
-    public String displayAllUsers(Model model) {
+    public String displayAllUsers(Model model, Principal principal) {
         model.addAttribute("allUsers", userService.findAll());
+        model.addAttribute("user", userDetailsService.findByUsername(principal.getName()));
+        model.addAttribute("roles", roleService.getRoles());
         return "users";
     }
 
     @GetMapping("/showAddNewUserForm")
-    public String showAddNewUserForm(Model model) {
+    public String showAddNewUserForm(Model model, Principal principal) {
         model.addAttribute("addUser", new User());
         model.addAttribute("roles", roleService.getRoles());
+        model.addAttribute("user", userDetailsService.findByUsername(principal.getName()));
         return "adduser";
     }
 
@@ -38,14 +46,6 @@ public class AdminController {
     public String addUser(@ModelAttribute("addUser") User user) {
         userService.saveUser(user);
         return "redirect:/admin/user";
-    }
-
-    @GetMapping(value = "/showEditUserForm")
-    public String showEditUserForm(@RequestParam("id") Long id, Model model) {
-        User user = userService.getUser(id);
-        model.addAttribute("user", user);
-        model.addAttribute("roles", roleService.getRoles());
-        return "updateuser";
     }
 
     @PostMapping("/saveEditUser")
