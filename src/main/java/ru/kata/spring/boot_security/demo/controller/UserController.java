@@ -14,8 +14,8 @@ public class UserController {
     private final UserServiceImp userServiceImp;
 
     @Autowired
-    public UserController( UserServiceImp userServiceImp ) {
-        this.userServiceImp=userServiceImp;
+    public UserController(UserServiceImp userServiceImp) {
+        this.userServiceImp = userServiceImp;
     }
 
     @GetMapping("/user")
