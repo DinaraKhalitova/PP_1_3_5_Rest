@@ -8,11 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "roles")
-public class Role implements GrantedAuthority {
-    @Override
-    public String getAuthority() {
-        return getRoleName();
-    }
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

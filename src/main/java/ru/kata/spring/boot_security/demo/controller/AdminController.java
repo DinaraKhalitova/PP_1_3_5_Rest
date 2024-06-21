@@ -5,9 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.security.UserDetailsServiceImpl;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
 import java.security.Principal;
 
@@ -17,19 +17,19 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserServiceImp userServiceImp;
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService, UserDetailsServiceImpl userDetailsService) {
+    public AdminController(UserService userService, RoleService roleService, UserServiceImp userServiceImp) {
         this.userService = userService;
         this.roleService = roleService;
-        this.userDetailsService = userDetailsService;
+        this.userServiceImp = userServiceImp;
     }
 
     @GetMapping("/user")
     public String displayAllUsers(Model model, Principal principal) {
         model.addAttribute("allUsers", userService.findAll());
-        model.addAttribute("user", userDetailsService.findByUsername(principal.getName()));
+        model.addAttribute("user", userServiceImp.findByUsername(principal.getName()));
         model.addAttribute("roles", roleService.getRoles());
         return "users";
     }
@@ -38,7 +38,7 @@ public class AdminController {
     public String showAddNewUserForm(Model model, Principal principal) {
         model.addAttribute("addUser", new User());
         model.addAttribute("roles", roleService.getRoles());
-        model.addAttribute("user", userDetailsService.findByUsername(principal.getName()));
+        model.addAttribute("user", userServiceImp.findByUsername(principal.getName()));
         return "adduser";
     }
 
