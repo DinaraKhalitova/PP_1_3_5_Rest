@@ -55,7 +55,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     @Override
     public void saveUser(User user) {
-
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -74,6 +73,9 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     @Override
     public void deleteUser(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User must not be null");
+        }
         userRepository.delete(user);
     }
 

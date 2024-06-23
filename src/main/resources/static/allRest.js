@@ -6,7 +6,7 @@ $(async function () {
 
 // show user(R) User and Admin panel
 async function showUserInfo() {
-    fetch("/user/")
+    fetch("/user")
         .then(response => response.json())
         .then(data => {
             document.querySelector('#userName').textContent = data.email;
