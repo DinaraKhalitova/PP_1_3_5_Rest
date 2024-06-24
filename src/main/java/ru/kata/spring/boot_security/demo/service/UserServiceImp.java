@@ -54,24 +54,26 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public void saveUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public User getUser(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
     @Override
+    @Transactional
     public void updateUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public void deleteUser(User user) {
         if (user == null) {
             throw new IllegalArgumentException("User must not be null");

@@ -49,16 +49,17 @@ public class AdminController {
         return ResponseEntity.ok().body(userService.getUser(id));
     }
 
-    @PostMapping("/addUser")
+    @PostMapping(value = "/addUser", consumes = "application/json", produces = "application/json")
+    //@PostMapping("/addUser")
     public ResponseEntity<User> addUser(@RequestBody User user) {
         userService.saveUser(user);
         return ResponseEntity.ok().body(user);
     }
 
     @PutMapping("/editUser")
-    public void saveEditUser(@RequestBody User user) {
+    public ResponseEntity<Void>saveEditUser(@RequestBody User user) {
         userService.updateUser(user);
-        ResponseEntity.ok(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteUser/{id}")

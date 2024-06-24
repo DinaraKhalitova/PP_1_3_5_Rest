@@ -30,14 +30,15 @@ public class Init {
         Role role1 = roleRepository.findByRoleName("ROLE_ADMIN");
         if (role1 == null) {
             role1 = new Role("ROLE_ADMIN");
-            roleRepository.save(role1);
+            role1 = roleRepository.save(role1); // Сохраняем, если роли нет
         }
 
         Role role2 = roleRepository.findByRoleName("ROLE_USER");
         if (role2 == null) {
             role2 = new Role("ROLE_USER");
-            roleRepository.save(role2);
+            role2 = roleRepository.save(role2); // Сохраняем, если роли нет
         }
+
         //password (admin = admin, user = user)
         user1 = new User("$2a$10$pQHAL3nF4iwu6k9jwHeg5u520N66WmVDiu2bK03WdfGvpFF3QNP92", "admin", "admin", "admin", 1);
         user2 = new User("$2a$10$ACmxffNNV33Ybg5.g3n3y.cu1QHp6AvmDWHU9TeKGvn1oUf7Grt7K", "user", "user", "user", 2);

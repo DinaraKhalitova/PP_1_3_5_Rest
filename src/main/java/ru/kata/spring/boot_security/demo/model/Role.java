@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
@@ -17,8 +19,8 @@ public class Role {
     @Column(name = "role")
     private String roleName;
 
+    @Transient
     @ManyToMany(mappedBy = "roles")
-    @JsonBackReference
     private List<User> users;
 
     public Role() {
