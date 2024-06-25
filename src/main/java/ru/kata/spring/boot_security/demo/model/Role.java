@@ -1,36 +1,39 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-public class Role {
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(name = "role")
     private String roleName;
 
-    @Transient
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
-    private List<User> users;
+    private Set<User> users;
 
     public Role() {
     }
 
-    public Role(String roleName) {
+    public Role(int id, String roleName) {
+        this.id = id;
         this.roleName = roleName;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -38,37 +41,32 @@ public class Role {
         return roleName;
     }
 
-    public void setRoleName(String role) {
-        this.roleName = role;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Role role = (Role) o;
-        return Objects.equals(id, role.id) && Objects.equals(roleName, role.roleName) && Objects.equals(users, role.users);
+    public String getRoleNameWithoutRole() {
+        return roleName.substring(5);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id, roleName, users);
+    public String getAuthority() {
+        return roleName;
     }
 
     @Override
     public String toString() {
         return "Role{" +
-                "id=" + id +
+                "Id=" + id +
                 ", roleName='" + roleName + '\'' +
-                ", users=" + users +
                 '}';
     }
 }
