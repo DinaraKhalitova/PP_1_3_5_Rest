@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.List;
@@ -14,12 +13,10 @@ import java.util.List;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    private final RoleService roleService;
     private final UserService userService;
 
     @Autowired
-    public AdminController(RoleService roleService, UserService userService) {
-        this.roleService = roleService;
+    public AdminController(UserService userService) {
         this.userService = userService;
     }
 
